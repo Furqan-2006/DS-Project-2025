@@ -1,0 +1,32 @@
+MiniInstagram/
+│
+├── include/                      # Public headers shared across all modules
+│   ├── core/                     # Person A
+│   │   ├── user.hpp
+│   │   ├── relationshipGraph.hpp
+│   │   ├── status.hpp
+│   │   └── followerList.hpp
+│   ├── interaction/              # Person B
+│   │   ├── friendRequest.hpp
+│   │   ├── message.hpp
+│   │   ├── notification.hpp
+│   │   └── activitySync.hpp
+│   └── content/                  # Person C
+│   |   ├── post.hpp
+│   |   ├── feed.hpp
+│   |   ├── search.hpp
+│   |   └── recommendation.hpp
+│   └── utils/                  
+│  
+├── src/
+│   ├── core/                     # mirrors include/core
+│   ├── interaction/              # mirrors include/interaction
+│   ├── content/                  # mirrors include/content
+│   └── main.cpp
+│
+├── data/                         # shared local storage
+│   ├── users.dat
+│   ├── posts.dat
+│   ├── messages.dat
+│   └── logs/
+
