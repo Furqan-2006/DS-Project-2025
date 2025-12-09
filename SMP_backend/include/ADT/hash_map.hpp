@@ -106,6 +106,10 @@ public:
         {
             return ptr != other.ptr;
         }
+        bool operator==(const iterator &other) const
+        {
+            return ptr == other.ptr;
+        }
     };
 
     struct const_iterator
@@ -122,6 +126,10 @@ public:
         bool operator!=(const const_iterator &other) const
         {
             return ptr != other.ptr;
+        }
+        bool operator==(const const_iterator &other) const
+        {
+            return ptr == other.ptr;
         }
     };
 

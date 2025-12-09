@@ -57,101 +57,137 @@ FriendRequest FriendRequest::fromJSON(const json &j)
     return fr;
 }
 
-// Friend Request Manager implementation
+// ============================================================================
+// Friend Request Manager - Global Manager Implementation
+// ============================================================================
 
-FriendRequestManager::FriendRequestManager(const std::string &fp) : filePath(fp) { loadFromFile(); }
+FriendRequestManager::FriendRequestManager(const std::string &fp) : filePath(fp)
+{
+    loadFromFile();
+}
 
 bool FriendRequestManager::sendRequest(unsigned long long sid, unsigned long long rid)
 {
+    // Cannot send request to yourself
     if (sid == rid)
-    {
         return false;
-    }
 
-    if (hasPenOut(rid) || hasPenIn(sid))
-    {
+    // Check if there's already a pending request between these users
+    if (hasPendingRequest(sid, rid))
         return false;
-    }
-    outbox.emplace_back(sid, rid);
-    inbox.emplace_back(sid, rid);
+
+    // Add the same request to both lists for efficient querying
+    FriendRequest req(sid, rid);
+    outbox.push_back(req);
+    inbox.push_back(req);
 
     return true;
 }
 
 bool FriendRequestManager::acceptRequest(unsigned long long sid)
 {
+    bool found = false;
+
+    // Update in inbox
     for (auto &req : inbox)
     {
         if (req.getSenderID() == sid && req.getStatus() == RequestStatus::PENDING)
         {
             req.accept();
-            for (auto &out : outbox)
-            {
-                if (out.getSenderID() == sid && out.getRecieverID() == req.getRecieverID() && out.getStatus() == RequestStatus::PENDING)
-                {
-                    out.accept();
-                    break;
-                }
-            }
-            return true;
+            found = true;
+            break;
         }
     }
-    return false;
+
+    if (!found)
+        return false;
+
+    // Update in outbox (same request from sender's perspective)
+    for (auto &out : outbox)
+    {
+        if (out.getSenderID() == sid && out.getStatus() == RequestStatus::PENDING)
+        {
+            out.accept();
+            break;
+        }
+    }
+
+    return true;
 }
 
 bool FriendRequestManager::rejectRequest(unsigned long long sid)
 {
+    bool found = false;
+
+    // Update in inbox
     for (auto &req : inbox)
     {
         if (req.getSenderID() == sid && req.getStatus() == RequestStatus::PENDING)
         {
             req.reject();
-
-            for (auto &out : outbox)
-            {
-                if (out.getSenderID() == sid && out.getRecieverID() == req.getRecieverID() && out.getStatus() == RequestStatus::PENDING)
-                {
-                    out.reject();
-                    break;
-                }
-            }
-            return true;
+            found = true;
+            break;
         }
     }
-    return false;
+
+    if (!found)
+        return false;
+
+    // Update in outbox
+    for (auto &out : outbox)
+    {
+        if (out.getSenderID() == sid && out.getStatus() == RequestStatus::PENDING)
+        {
+            out.reject();
+            break;
+        }
+    }
+
+    return true;
 }
 
 bool FriendRequestManager::cancelRequest(unsigned long long rid)
 {
+    bool found = false;
+
+    // Update in outbox
     for (auto &req : outbox)
     {
         if (req.getRecieverID() == rid && req.getStatus() == RequestStatus::PENDING)
         {
             req.cancel();
-
-            for (auto &in : inbox)
-            {
-                if (in.getRecieverID() == rid && in.getSenderID() == req.getSenderID() && in.getStatus() == RequestStatus::PENDING)
-                {
-                    in.cancel();
-                    break;
-                }
-            }
-            return true;
+            found = true;
+            break;
         }
     }
-    return false;
+
+    if (!found)
+        return false;
+
+    // Update in inbox
+    for (auto &in : inbox)
+    {
+        if (in.getRecieverID() == rid && in.getStatus() == RequestStatus::PENDING)
+        {
+            in.cancel();
+            break;
+        }
+    }
+
+    return true;
 }
 
 std::vector<FriendRequest> FriendRequestManager::getInbox() const
 {
     return inbox;
 }
+
 std::vector<FriendRequest> FriendRequestManager::getOutbox() const
 {
     return outbox;
 }
 
+// Check if sender has ANY pending incoming request
 bool FriendRequestManager::hasPenIn(unsigned long long sid) const
 {
     for (const auto &req : inbox)
@@ -164,11 +200,27 @@ bool FriendRequestManager::hasPenIn(unsigned long long sid) const
     return false;
 }
 
+// Check if sender has ANY pending outgoing request
 bool FriendRequestManager::hasPenOut(unsigned long long rid) const
 {
     for (const auto &req : outbox)
     {
         if (req.getRecieverID() == rid && req.getStatus() == RequestStatus::PENDING)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// NEW: Check if specific sender-receiver pair has pending request
+bool FriendRequestManager::hasPendingRequest(unsigned long long sid, unsigned long long rid) const
+{
+    for (const auto &req : outbox)
+    {
+        if (req.getSenderID() == sid &&
+            req.getRecieverID() == rid &&
+            req.getStatus() == RequestStatus::PENDING)
         {
             return true;
         }

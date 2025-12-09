@@ -1,4 +1,4 @@
-#include "interaction/notification.hpp"
+#include "system/notification.hpp"
 #include <cstring>
 #include <fstream>
 #include <exception>

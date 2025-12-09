@@ -2,24 +2,41 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "cppbuild",
-			"label": "C/C++: g++.exe build active file",
-			"command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+			"label": "build",
+			"type": "shell",
+			"command": "g++",
 			"args": [
-				"-fdiagnostics-color=always",
 				"-g",
-				"${file}",
+				"${workspaceFolder}/src/main.cpp",
+				"${workspaceFolder}/src/content/feed.cpp",
+				"${workspaceFolder}/src/content/post.cpp",
+				"${workspaceFolder}/src/content/recommendation.cpp",
+				"${workspaceFolder}/src/core/followerList.cpp",
+				"${workspaceFolder}/src/core/relationGraph.cpp",
+				"${workspaceFolder}/src/core/user.cpp",
+				"${workspaceFolder}/src/core/status.cpp",
+				"${workspaceFolder}/src/interaction/message.cpp",
+				"${workspaceFolder}/src/interaction/friendRequest.cpp",
+				"${workspaceFolder}/src/system/notification.cpp",
+				"${workspaceFolder}/src/system/search.cpp",
+				"${workspaceFolder}/src/system/systemManager.cpp",
+				"${workspaceFolder}/src/utils/FileIO.cpp",
+				"${workspaceFolder}/src/utils/helpers.cpp",
+				"${workspaceFolder}/src/utils/validation.cpp",
 				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe"
+				"${workspaceFolder}/build/Mini_Instagram",
+				"-I",
+				"D:/SFML-3.0.0/include",
+				"-I",
+				"${workspaceFolder}/include",
 			],
-			"options": {
-				"cwd": "${fileDirname}"
+			"group": {
+				"kind": "build",
+				"isDefault": true
 			},
 			"problemMatcher": [
 				"$gcc"
-			],
-			"group": "build",
-			"detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
+			]
 		}
 	]
 }

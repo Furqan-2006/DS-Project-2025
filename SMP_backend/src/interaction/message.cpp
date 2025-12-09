@@ -62,7 +62,9 @@ std::string Message::format() const
     return "[" + std::string(buff) + "] " + sender + " -> " + reciever + ": " + text;
 }
 
-// Message System class defination
+// ============================================================================
+// Message System Implementation
+// ============================================================================
 
 MessageSystem::MessageSystem(const std::string &path) : filePath(path) {}
 
@@ -73,6 +75,7 @@ void MessageSystem::registerUser(User *user)
         users[user->getID()] = user;
     }
 }
+
 void MessageSystem::sendMessage(const User &s, const User &r, const std::string &text)
 {
     Message msg(s.getUname(), r.getUname(), text);
@@ -80,6 +83,7 @@ void MessageSystem::sendMessage(const User &s, const User &r, const std::string 
 
     chat[key].enqueue(msg);
 }
+
 std::vector<Message> MessageSystem::getChatHistory(const User &u1, const User &u2) const
 {
     std::string key = makeKey(u1.getID(), u2.getID());
@@ -141,7 +145,6 @@ bool MessageSystem::loadFromFile()
             {
                 for (const auto &msgJson : msgArr)
                 {
-
                     Message m = Message::fromJSON(msgJson);
                     chat[key].enqueue(m);
                 }
@@ -189,30 +192,120 @@ bool MessageSystem::saveToFile() const
     return true;
 }
 
+// ============================================================================
+// KMP String Matching Algorithm
+// Time Complexity: O(n + m) where n = text length, m = pattern length
+// Space Complexity: O(m) for LPS array
+// ============================================================================
+
+namespace StringMatching
+{
+    // Build LPS (Longest Prefix Suffix) array for KMP algorithm
+    std::vector<int> buildLPS(const std::string &pattern)
+    {
+        int m = pattern.length();
+        std::vector<int> lps(m, 0);
+        int len = 0; // length of previous longest prefix suffix
+        int i = 1;
+
+        while (i < m)
+        {
+            if (pattern[i] == pattern[len])
+            {
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else
+            {
+                if (len != 0)
+                {
+                    len = lps[len - 1];
+                }
+                else
+                {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+
+    // KMP Search - returns true if pattern found in text
+    bool kmpSearch(const std::string &text, const std::string &pattern)
+    {
+        if (pattern.empty())
+            return true;
+        if (text.empty() || text.length() < pattern.length())
+            return false;
+
+        int n = text.length();
+        int m = pattern.length();
+
+        std::vector<int> lps = buildLPS(pattern);
+
+        int i = 0; // index for text
+        int j = 0; // index for pattern
+
+        while (i < n)
+        {
+            if (text[i] == pattern[j])
+            {
+                i++;
+                j++;
+            }
+
+            if (j == m)
+            {
+                // Pattern found at index (i - j)
+                return true;
+            }
+            else if (i < n && text[i] != pattern[j])
+            {
+                if (j != 0)
+                {
+                    j = lps[j - 1];
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+// ============================================================================
+// Search Messages using KMP Algorithm
+// ============================================================================
+
 std::vector<Message> MessageSystem::searchMessages(const User &user, const std::string &keyword) const
 {
     std::vector<Message> results;
+
+    if (keyword.empty())
+        return results;
+
     std::string lowerKeyword = toLower(keyword);
 
+    // Iterate through all chats
     for (auto it = chat.begin(); it != chat.end(); ++it)
     {
         std::vector<Message> messages = (*it).value.toVector();
 
         for (const auto &msg : messages)
         {
+            // Only search in messages where user is sender or receiver
             if (msg.getSender() == user.getUname() || msg.getReciever() == user.getUname())
             {
                 std::string lowerText = toLower(msg.getText());
-                if (lowerText.length() >= lowerKeyword.length())
+
+                // Use KMP algorithm for efficient string matching
+                if (StringMatching::kmpSearch(lowerText, lowerKeyword))
                 {
-                    for (size_t i = 0; i <= lowerText.length() - lowerKeyword.length(); ++i)
-                    {
-                        if (lowerText.substr(i, lowerKeyword.length()) == lowerKeyword)
-                        {
-                            results.push_back(msg);
-                            break;
-                        }
-                    }
+                    results.push_back(msg);
                 }
             }
         }

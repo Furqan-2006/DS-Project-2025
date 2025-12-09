@@ -41,6 +41,11 @@ public:
         map.clear();
     }
 
+    const std::vector<NodeID> &data() const
+    {
+        return map.buckets; 
+    }
+
     auto begin() { return map.begin(); }
     auto end() { return map.end(); }
 

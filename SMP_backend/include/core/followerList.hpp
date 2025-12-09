@@ -1,18 +1,30 @@
 #pragma once
 
-#include "relationGraph.hpp"
+#include "ADT/hash_map.hpp"
+#include "ADT/linked_list.hpp"
+
+typedef unsigned long long ull;
 
 class FollowerList
 {
 private:
-    const RelationshipGraph &rg;
+    HashMap<ull, LinkedList<ull> *> followersMap;
 
 public:
-    explicit FollowerList(const RelationshipGraph &graph);
+    FollowerList();
+    ~FollowerList();
 
-    const Set<NodeID> *getFollowers(NodeID user) const;
-    const Set<NodeID> *getFollowing(NodeID user) const;
+    void addFollower(ull userID, ull followerID);
+    void removeFollower(ull userID, ull followerID);
 
-    size_t followerCount(NodeID user) const;
-    size_t followingCount(NodeID user) const;
+    LinkedList<ull> *getFollowers(ull userID);
+    const LinkedList<ull> *getFollowers(ull userID) const;
+    size_t followerCount(ull userID) const;
+
+    bool hasFollower(ull userID, ull followerID) const;
+
+    ull *findFollowerByUsername(ull userID, const char *username,
+                                const HashMap<ull, const char *> &usernames);
+
+    void removeUser(ull userID);
 };

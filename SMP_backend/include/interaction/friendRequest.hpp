@@ -15,6 +15,7 @@ enum class RequestStatus
     REJECTED,
     CANCELLED
 };
+
 class FriendRequest
 {
 private:
@@ -46,7 +47,7 @@ public:
 class FriendRequestManager
 {
 private:
-        std::vector<FriendRequest> outbox;
+    std::vector<FriendRequest> outbox;
     std::vector<FriendRequest> inbox;
 
     std::string filePath;
@@ -63,8 +64,12 @@ public:
     std::vector<FriendRequest> getInbox() const;
     std::vector<FriendRequest> getOutbox() const;
 
+    // Check if user has ANY pending requests
     bool hasPenIn(unsigned long long sid) const;
     bool hasPenOut(unsigned long long rid) const;
+    
+    // NEW: Check if specific sender-receiver pair has pending request
+    bool hasPendingRequest(unsigned long long sid, unsigned long long rid) const;
 
     bool saveToFile() const;
     bool loadFromFile();
