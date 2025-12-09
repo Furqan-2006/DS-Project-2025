@@ -7,6 +7,7 @@ class Set
 {
 private:
     HashMap<Key, bool> map;
+    std::vector<Key> elements;
 
 public:
     Set() = default;
@@ -41,9 +42,9 @@ public:
         map.clear();
     }
 
-    const std::vector<NodeID> &data() const
+    const std::vector<Key> &data() const
     {
-        return map.buckets; 
+        return elements;
     }
 
     auto begin() { return map.begin(); }

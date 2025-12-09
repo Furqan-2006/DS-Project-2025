@@ -37,6 +37,31 @@ void FriendRequest::cancel()
     s = RequestStatus::CANCELLED;
 }
 
+std::string FriendRequest::statusToString(RequestStatus st)
+{
+    switch (st)
+    {
+    case RequestStatus::PENDING:
+        return "PENDING";
+    case RequestStatus::ACCEPTED:
+        return "ACCEPTED";
+    case RequestStatus::REJECTED:
+        return "REJECTED";
+    }
+    return "UNKNOWN";
+}
+
+RequestStatus FriendRequest::stringToType(const std::string &st)
+{
+    if (st == "PENDING")
+        return RequestStatus::PENDING;
+    if (st == "ACCEPTED")
+        return RequestStatus::ACCEPTED;
+    if (st == "REJECTED")
+        return RequestStatus::REJECTED;
+    return RequestStatus::PENDING; // safe fallback
+}
+
 json FriendRequest::toJSON() const
 {
     return json{

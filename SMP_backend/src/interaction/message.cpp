@@ -284,7 +284,7 @@ namespace StringMatching
 std::vector<Message> MessageSystem::searchMessages(const User &user, const std::string &keyword) const
 {
     std::vector<Message> results;
-
+    
     if (keyword.empty())
         return results;
 
@@ -301,7 +301,7 @@ std::vector<Message> MessageSystem::searchMessages(const User &user, const std::
             if (msg.getSender() == user.getUname() || msg.getReciever() == user.getUname())
             {
                 std::string lowerText = toLower(msg.getText());
-
+                
                 // Use KMP algorithm for efficient string matching
                 if (StringMatching::kmpSearch(lowerText, lowerKeyword))
                 {

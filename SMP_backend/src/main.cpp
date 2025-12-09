@@ -19,6 +19,7 @@ class SocialPlatformCLI
 private:
     SystemManager *sysManager;
     ull currentUserID;
+    std::string currUserName;
     bool isLoggedIn;
 
     void clearScreen()
@@ -42,25 +43,25 @@ private:
     {
         std::cout << "\n"
                   << BOLD << CYAN;
-        std::cout << "╔════════════════════════════════════════════════════════════╗\n";
-        std::cout << "║ " << std::setw(58) << std::left << title << " ║\n";
-        std::cout << "╚════════════════════════════════════════════════════════════╝\n";
+        std::cout << "/------------------------------------------------------------\\\n";
+        std::cout << "| " << std::setw(58) << std::left << title << " |\n";
+        std::cout << "\\------------------------------------------------------------/\n";
         std::cout << RESET;
     }
 
     void printSuccess(const std::string &msg)
     {
-        std::cout << GREEN << "✓ " << msg << RESET << "\n";
+        std::cout << GREEN << "200 " << msg << RESET << "\n";
     }
 
     void printError(const std::string &msg)
     {
-        std::cout << RED << "✗ " << msg << RESET << "\n";
+        std::cout << RED << "404 " << msg << RESET << "\n";
     }
 
     void printInfo(const std::string &msg)
     {
-        std::cout << BLUE << "ℹ " << msg << RESET << "\n";
+        std::cout << BLUE << "i " << msg << RESET << "\n";
     }
 
     std::string getInput(const std::string &prompt)
@@ -109,9 +110,9 @@ private:
         auto stats = sysManager->getUserStats(currentUserID);
         std::cout << "\n"
                   << BOLD << "Quick Stats:" << RESET;
-        std::cout << " 📊 Posts: " << stats.postCount;
-        std::cout << " | 👥 Friends: " << stats.friendCount;
-        std::cout << " | 🔔 Unread: " << stats.unreadNotifications;
+        std::cout << " Posts: " << stats.postCount;
+        std::cout << " | Friends: " << stats.friendCount;
+        std::cout << " | Unread: " << stats.unreadNotifications;
         std::cout << " | " << (stats.isOnline ? GREEN "●" : RED "○") << " " << (stats.isOnline ? "Online" : "Offline") << RESET << "\n\n";
 
         std::cout << "  " << BOLD << "1." << RESET << " My Profile\n";
@@ -171,6 +172,7 @@ private:
         if (result.success)
         {
             currentUserID = user->getID();
+            currUserName = user->getUname();
             isLoggedIn = true;
             printSuccess("Login successful!");
 
@@ -300,7 +302,7 @@ private:
                 if (post)
                 {
                     std::cout << "\n"
-                              << CYAN << "───────────────────────────────────────" << RESET << "\n";
+                              << CYAN << "---------------------------------------" << RESET << "\n";
                     post->display();
                     std::cout << "  💙 " << post->getLikesCount() << " likes\n";
                 }
@@ -444,7 +446,7 @@ private:
                 if (post)
                 {
                     std::cout << "\n"
-                              << CYAN << "───────────────────────────────────────" << RESET << "\n";
+                              << CYAN << "---------------------------------------" << RESET << "\n";
                     post->display();
                     std::cout << "  💙 " << post->getLikesCount() << " likes\n";
                 }
@@ -562,7 +564,7 @@ private:
                       << RESET;
             for (const Message &msg : history)
             {
-                if (msg.getSender() == currentUserID)
+                if (msg.getSender() == currUserName)
                 {
                     std::cout << GREEN << "You: " << RESET;
                 }
@@ -800,7 +802,7 @@ private:
                 if (post)
                 {
                     std::cout << "\n"
-                              << CYAN << "───────────────────────────────────────" << RESET << "\n";
+                              << CYAN << "------------------------------------" << RESET << "\n";
                     post->display();
                     std::cout << "  💙 " << post->getLikesCount() << " likes\n";
                 }
@@ -895,7 +897,7 @@ public:
         std::cout << R"(
     __  __ _       _   ___           _                                  
    |  \/  (_)_ __ (_) |_ _|_ __  ___| |_ __ _  __ _ _ __ __ _ _ __ ___  
-   | |\/| | | '_ \| |  | || '_ \/ __| __/ _` |/ _` | '__/ _` | '_ ` _ \ 
+   | |\/| | | '_ \| |  | || '_ \/ __| __/ _` |/ _` | '__/ _` | '_ ` _  ` 
    | |  | | | | | | |  | || | | \__ \ || (_| | (_| | | | (_| | | | | | |
    |_|  |_|_|_| |_|_| |___|_| |_|___/\__\__,_|\__, |_|  \__,_|_| |_| |_|
                                                |___/                      

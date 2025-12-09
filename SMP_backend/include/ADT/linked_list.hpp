@@ -244,16 +244,16 @@ struct LLNode
 };
 
 template <typename K, typename V>
-class LinkedList
+class KVLinkedList
 {
 private:
     LLNode<K, V> *headNode;
     size_t count;
 
 public:
-    LinkedList() : headNode(nullptr), count(0) {}
+    KVLinkedList() : headNode(nullptr), count(0) {}
 
-    ~LinkedList()
+    ~KVLinkedList()
     {
         clear();
     }

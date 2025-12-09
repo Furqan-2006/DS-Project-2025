@@ -113,7 +113,7 @@ std::vector<NodeID> RelationshipGraph::getFriends(NodeID user) const
     if (!following)
         return friends;
 
-    const auto &data = following->data();
+    auto &data = following->data();
 
     for (size_t i = 0; i < following->size(); i++)
     {

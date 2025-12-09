@@ -94,6 +94,7 @@ public:
     struct iterator
     {
         Node *ptr;
+        iterator() : ptr(nullptr) {}
         iterator(Node *p) : ptr(p) {}
 
         T &operator*() { return ptr->value; }
@@ -115,6 +116,7 @@ public:
     struct const_iterator
     {
         const Node *ptr;
+        const_iterator() : ptr(nullptr) {}
         const_iterator(const Node *p) : ptr(p) {}
 
         const T &operator*() const { return ptr->value; }
