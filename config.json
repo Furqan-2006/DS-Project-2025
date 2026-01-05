@@ -1,0 +1,115 @@
+{
+  "_comment": "Mini Instagram Configuration File",
+  "_version": "1.0.0",
+  
+  "application": {
+    "name": "Mini Instagram",
+    "version": "1.0.0",
+    "environment": "development"
+  },
+  
+  "database": {
+    "type": "file",
+    "data_directory": "./SMP_backend/data",
+    "backup_directory": "./SMP_backend/data/backups",
+    "auto_save": true,
+    "auto_save_interval_seconds": 300
+  },
+  
+  "security": {
+    "password_requirements": {
+      "min_length": 8,
+      "max_length": 128,
+      "require_uppercase": false,
+      "require_lowercase": false,
+      "require_digit": false,
+      "require_special_char": false
+    },
+    "authentication": {
+      "max_login_attempts": 5,
+      "lockout_duration_seconds": 900,
+      "session_timeout_seconds": 3600
+    },
+    "password_hashing": {
+      "enabled": false,
+      "algorithm": "bcrypt",
+      "salt_rounds": 10
+    }
+  },
+  
+  "features": {
+    "notifications": {
+      "enabled": true,
+      "max_unread": 100
+    },
+    "recommendations": {
+      "enabled": true,
+      "max_user_recommendations": 10,
+      "max_post_recommendations": 20
+    },
+    "messaging": {
+      "enabled": true,
+      "max_message_length": 1000
+    },
+    "posts": {
+      "max_content_length": 5000,
+      "max_posts_per_day": 50
+    },
+    "search": {
+      "enabled": true,
+      "max_results": 50
+    }
+  },
+  
+  "performance": {
+    "cache": {
+      "enabled": true,
+      "ttl_seconds": 300,
+      "max_cache_size_mb": 100
+    },
+    "feed": {
+      "max_feed_size": 100,
+      "default_feed_size": 20
+    },
+    "pagination": {
+      "default_page_size": 20,
+      "max_page_size": 100
+    }
+  },
+  
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "log_directory": "./SMP_backend/data/logs",
+    "max_log_size_mb": 50,
+    "log_rotation": true,
+    "log_files": {
+      "application": "app.log",
+      "security": "security.log",
+      "errors": "errors.log"
+    }
+  },
+  
+  "limits": {
+    "max_username_length": 20,
+    "min_username_length": 3,
+    "max_city_length": 50,
+    "max_followers": 10000,
+    "max_following": 5000,
+    "max_posts": 100000
+  },
+  
+  "ui": {
+    "cli": {
+      "colors_enabled": true,
+      "clear_screen": true,
+      "show_stats": true
+    }
+  },
+  
+  "development": {
+    "debug_mode": false,
+    "verbose_logging": false,
+    "test_data": false
+  }
+}
