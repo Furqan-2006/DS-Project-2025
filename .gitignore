@@ -1,0 +1,53 @@
+# Build artifacts
+build/
+*.exe
+*.out
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+
+# Compiled binaries
+SMP_backend/build/Mini_Instagram
+SMP_backend/build/Mini_Instagram.exe
+
+# Compiler generated files
+*.a
+*.lib
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Test coverage
+*.gcov
+*.gcda
+*.gcno
+
+# Logs
+*.log
+logs/
+SMP_backend/data/logs/*.log
+
+# Data files (optional - remove if data should be tracked)
+# SMP_backend/data/*.dat
+# SMP_backend/data/*.txt
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Package manager
+node_modules/
