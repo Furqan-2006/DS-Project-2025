@@ -32,11 +32,14 @@ echo ""
 
 # Check C++ version support
 echo -n "Checking C++17 support... "
-echo "int main(){}" | g++ -std=c++17 -x c++ - -o /tmp/test_cpp17 2>/dev/null && rm -f /tmp/test_cpp17
+TEMP_FILE=$(mktemp)
+echo "int main(){}" | g++ -std=c++17 -x c++ - -o "$TEMP_FILE" 2>/dev/null
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓${NC}"
+    rm -f "$TEMP_FILE"
 else
     echo -e "${RED}✗${NC}"
+    rm -f "$TEMP_FILE"
     echo "Error: C++17 support required but not available."
     exit 1
 fi

@@ -51,22 +51,12 @@ bool UserValidator::usernameNotEmpty(const std::string &uname)
 
 bool UserValidator::usernameMinLength(const std::string &uname, int minLen)
 {
-    int len = 0;
-    for (char c : uname)
-    {
-        ++len;
-    }
-    return len >= minLen;
+    return static_cast<int>(uname.length()) >= minLen;
 }
 
 bool UserValidator::usernameMaxLength(const std::string &uname, int maxLen)
 {
-    int len = 0;
-    for (char c : uname)
-    {
-        ++len;
-    }
-    return len <= maxLen;
+    return static_cast<int>(uname.length()) <= maxLen;
 }
 
 bool UserValidator::usernameHasValidChars(const std::string &uname)
@@ -100,22 +90,12 @@ bool UserValidator::passwordNotEmpty(const std::string &pwd)
 
 bool UserValidator::passwordMinLength(const std::string &pwd, int minLen)
 {
-    int len = 0;
-    for (size_t i = 0; i < pwd.length(); ++i)
-    {
-        ++len;
-    }
-    return len >= minLen;
+    return static_cast<int>(pwd.length()) >= minLen;
 }
 
 bool UserValidator::passwordMaxLength(const std::string &pwd, int maxLen)
 {
-    int len = 0;
-    for (size_t i = 0; i < pwd.length(); ++i)
-    {
-        ++len;
-    }
-    return len <= maxLen;
+    return static_cast<int>(pwd.length()) <= maxLen;
 }
 
 bool UserValidator::passwordHasUppercase(const std::string &pwd)
@@ -179,22 +159,12 @@ bool UserValidator::cityNotEmpty(const std::string &city)
 
 bool UserValidator::cityMinLength(const std::string &city, int minLen)
 {
-    int len = 0;
-    for (size_t i = 0; i < city.length(); ++i)
-    {
-        ++len;
-    }
-    return len >= minLen;
+    return static_cast<int>(city.length()) >= minLen;
 }
 
 bool UserValidator::cityMaxLength(const std::string &city, int maxLen)
 {
-    int len = 0;
-    for (size_t i = 0; i < city.length(); ++i)
-    {
-        ++len;
-    }
-    return len <= maxLen;
+    return static_cast<int>(city.length()) <= maxLen;
 }
 
 bool UserValidator::cityHasValidChars(const std::string &city)
@@ -259,10 +229,5 @@ bool UserValidator::hasWhitespace(const std::string &str)
 
 int UserValidator::stringLength(const std::string &str)
 {
-    int len = 0;
-    for (size_t i = 0; i < str.length(); ++i)
-    {
-        ++len;
-    }
-    return len;
+    return static_cast<int>(str.length());
 }

@@ -3,7 +3,7 @@
 // To actually run tests, you need to install Google Test
 
 #include <gtest/gtest.h>
-#include "../SMP_backend/include/ADT/hash_map.hpp"
+#include "ADT/hash_map.hpp"
 #include <string>
 
 // Test fixture for HashMap tests
