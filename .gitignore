@@ -24,11 +24,11 @@ SMP_backend/build/Mini_Instagram.exe
 *~
 .DS_Store
 
-# CMake
+# CMake generated files
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
+# Note: We keep our custom Makefile in SMP_backend/
 
 # Test coverage
 *.gcov

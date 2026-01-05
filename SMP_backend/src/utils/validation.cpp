@@ -101,7 +101,7 @@ bool UserValidator::passwordNotEmpty(const std::string &pwd)
 bool UserValidator::passwordMinLength(const std::string &pwd, int minLen)
 {
     int len = 0;
-    for (char c : pwd)
+    for (size_t i = 0; i < pwd.length(); ++i)
     {
         ++len;
     }
@@ -111,7 +111,7 @@ bool UserValidator::passwordMinLength(const std::string &pwd, int minLen)
 bool UserValidator::passwordMaxLength(const std::string &pwd, int maxLen)
 {
     int len = 0;
-    for (char c : pwd)
+    for (size_t i = 0; i < pwd.length(); ++i)
     {
         ++len;
     }
@@ -180,7 +180,7 @@ bool UserValidator::cityNotEmpty(const std::string &city)
 bool UserValidator::cityMinLength(const std::string &city, int minLen)
 {
     int len = 0;
-    for (char c : city)
+    for (size_t i = 0; i < city.length(); ++i)
     {
         ++len;
     }
@@ -190,7 +190,7 @@ bool UserValidator::cityMinLength(const std::string &city, int minLen)
 bool UserValidator::cityMaxLength(const std::string &city, int maxLen)
 {
     int len = 0;
-    for (char c : city)
+    for (size_t i = 0; i < city.length(); ++i)
     {
         ++len;
     }
@@ -260,7 +260,7 @@ bool UserValidator::hasWhitespace(const std::string &str)
 int UserValidator::stringLength(const std::string &str)
 {
     int len = 0;
-    for (char c : str)
+    for (size_t i = 0; i < str.length(); ++i)
     {
         ++len;
     }
